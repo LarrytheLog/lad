@@ -1,14 +1,15 @@
 import React, {useEffect, useRef} from 'react'
-// import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { auth, logInWithEmailAndPassword, signInWithGoogle } from "../firebase";
-//import { useAuthState } from "react-firebase-hooks/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGoogle } from "@fortawesome/free-brands-svg-icons"
 
 import {Form, Button, Card} from 'react-bootstrap'
+
+
 export default function Login() {
-    // const [user, loading, error] = useAuthState(auth);
-    // const navigate = useNavigate();
+     const [user, loading, error] = useAuthState(auth);
     // useEffect(() => {
     //   if (loading) {
     //     // maybe trigger a loading screen
@@ -16,7 +17,10 @@ export default function Login() {
     //   }
     //   if (user) navigate("/dashboard");
     // }, [user, loading]);    
-
+    async function handleSubmit(e){
+        e.preventDefault()
+        logInWithEmailAndPassword(emailRef.current.value,passwordRef.current.value)
+    }
 
     const emailRef = useRef();
     const passwordRef = useRef();
@@ -25,7 +29,7 @@ export default function Login() {
     <Card>
         <Card.Body>
             <h2 className='text-center mb-4'>Login</h2>
-            <Form>
+            <Form onSubmit={handleSubmit}>
                 <Form.Group id ="email">
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" ref={emailRef} required />
@@ -34,15 +38,15 @@ export default function Login() {
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" ref={passwordRef} required />
                 </Form.Group>
-                <Button className='w-100 mt-2' type = "submit" onClick={()=>logInWithEmailAndPassword(emailRef,passwordRef)}>Login</Button>
+                <Button className='w-100 mt-2' type = "submit">Login</Button>
             </Form>
         </Card.Body>
     </Card>
 
     <div className='w-100 text-center mt-2'>
-        <p> Don't Have An Account? Sign Up </p>
+        <p> Don't Have An Account? <Link to="/register">Sign Up</Link></p> 
         <p> Or Sign In With: </p>
-        <Button className = 'mt-2'onClick={()=>signInWithGoogle()}> <FontAwesomeIcon icon={faGoogle} /> </Button>
+        <Button className = 'mt-2' > <FontAwesomeIcon icon={faGoogle} /> </Button>
     </div>
     </>
   )
