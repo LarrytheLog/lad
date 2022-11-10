@@ -1,4 +1,4 @@
-#LAD Project
+# LAD Project
 
 A Firebase + React project for a school project.
 
